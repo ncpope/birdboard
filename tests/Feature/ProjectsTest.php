@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class ProjectsTest extends TestCase
 {
@@ -16,7 +16,7 @@ class ProjectsTest extends TestCase
         $this->withoutExceptionHandling();
 
         $attributes = [
-            'title' => $this->faker->sentence(),
+            'title'       => $this->faker->sentence(),
             'description' => $this->faker->sentence(),
         ];
 
@@ -28,7 +28,8 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_view_a_project() {
+    public function a_user_can_view_a_project()
+    {
         $this->withoutExceptionHandling();
 
         $project = factory('App\Project')->create();
@@ -37,7 +38,6 @@ class ProjectsTest extends TestCase
             ->assertSee($project->title)
             ->assertSee($project->description);
     }
-
 
     /** @test */
     public function a_project_requires_a_title()
