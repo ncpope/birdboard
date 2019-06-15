@@ -24,7 +24,7 @@ class ProjectsController extends Controller
     public function store()
     {
         $attributes = request()->validate([
-            'title' => 'required',
+            'title'       => 'required',
             'description' => 'required',
         ]);
 
