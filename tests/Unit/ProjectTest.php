@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProjectTest extends TestCase
 {
-    use RefreshDatabase;
+    use WithFaker, RefreshDatabase;
 
     /** @test */
     public function it_has_a_path()
