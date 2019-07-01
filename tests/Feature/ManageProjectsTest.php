@@ -6,30 +6,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProjectsTest extends TestCase
+class ManageProjectsTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function guests_can_not_create_projects()
-    {
-        $attributes = factory('App\Project')->raw();
-
-        $this->post('/projects', $attributes)->assertRedirect('/login');
-    }
-
-    /** @test */
-    public function guests_can_not_view_projects()
-    {
-        $this->get('/projects')->assertRedirect('/login');
-    }
-
-    /** @test */
-    public function guests_can_not_view_a_project()
+    public function guests_can_not_manage_projects()
     {
         $project = factory('App\Project')->create();
 
+        $this->get('/projects')->assertRedirect('/login');
+        $this->get('/projects/create')->assertRedirect('/login');
         $this->get($project->path())->assertRedirect('/login');
+        $this->post('/projects', $project->toArray())->assertRedirect('/login');
     }
 
     /** @test */
@@ -38,6 +27,8 @@ class ProjectsTest extends TestCase
         $this->withoutExceptionHandling();
 
         $this->actingAs(factory('App\User')->create());
+
+        $this->get('/projects/create')->assertStatus(200);
 
         $attributes = [
             'title'       => $this->faker->sentence(),
@@ -94,4 +85,14 @@ class ProjectsTest extends TestCase
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
     }
+
+     /** @test */
+     public function a_project_requires_a_featured_image()
+     {
+         $this->actingAs(factory('App\User')->create());
+ 
+         $attributes = factory('App\Project')->raw(['featured_image' => null]);
+ 
+         $this->post('/projects', $attributes)->assertSessionHasErrors('featured_image');
+     }
 }
