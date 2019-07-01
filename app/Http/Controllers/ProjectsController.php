@@ -33,6 +33,7 @@ class ProjectsController extends Controller
         $attributes = request()->validate([
             'title'       => 'required',
             'description' => 'required',
+            'featured_image' => 'required',
         ]);
 
         auth()->user()->projects()->create($attributes);

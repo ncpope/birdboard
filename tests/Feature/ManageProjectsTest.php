@@ -85,4 +85,14 @@ class ManageProjectsTest extends TestCase
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
     }
+
+     /** @test */
+     public function a_project_requires_a_featured_image()
+     {
+         $this->actingAs(factory('App\User')->create());
+ 
+         $attributes = factory('App\Project')->raw(['featured_image' => null]);
+ 
+         $this->post('/projects', $attributes)->assertSessionHasErrors('featured_image');
+     }
 }
